@@ -1,0 +1,4 @@
+import { parseAbi } from "viem";
+export const registryAbi=parseAbi(["function registerTool(bytes32 toolId)","function tools(bytes32 toolId) view returns (address operator,uint64 currentVersion,bool exists)","function publishVersion(bytes32 toolId,bytes32 manifestDigest,address paymentDestination)","function issueSeal(bytes32 toolId,uint64 version,bytes32 manifestDigest,bytes32 assessmentDigest,uint8 risk,uint64 expiresAt)","function registerMandate(bytes32 mandateId,bytes32 mandateDigest,uint8 maxRisk,uint128 maxPerInvocation,uint128 maxDaily)"]);
+export const settlementAbi=parseAbi(["function settleInvocation(bytes32 receiptId,bytes32 toolId,bytes32 mandateId,uint64 version,bytes32 manifestDigest,uint256 amount)"]);
+export const erc20Abi=parseAbi(["function approve(address spender,uint256 value)","function balanceOf(address account) view returns (uint256)"]);

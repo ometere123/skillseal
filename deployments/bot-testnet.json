@@ -1,6 +1,19 @@
 {
-  "status": "NOT_DEPLOYED",
-  "network": "BOT Testnet",
   "chainId": 968,
-  "reason": "No funded deployer or deployment approval was provided. Values must be written from independently verified deployment receipts only."
+  "deployer": "0x44747210d80dab3C8eD4E4087E2b75bbfBE6E33D",
+  "token": {
+    "address": "0x9d0232f0cda5708c33fe03fb05759cbee337d655",
+    "deploymentTx": "0x41680f21bf8a9517ea8b4fe4ee843a244c63b3bb0251e3f9bb6a1469733eced3",
+    "block": "19993614"
+  },
+  "registry": {
+    "address": "0x932d254582b4f0b6822e8719f5af08717d872674",
+    "deploymentTx": "0x37eab1dab3a90b3cb8b03921091e227dfcf09e4cf77f86b31d1b64b3988be24d",
+    "block": "19993620"
+  },
+  "settlement": {
+    "address": "0x23d9c5de359378c783378f71fe3f2f2f4fbc4074",
+    "deploymentTx": "0x0556d40060246bea168f521d05f406bac7a0408aab5aa73c941dcbf0ca8e729a",
+    "block": "19993628"
+  }
 }

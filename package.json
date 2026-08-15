@@ -14,8 +14,10 @@
     "contracts:compile": "node scripts/compile-contracts.mjs",
     "agent:v4": "node examples/reference-agent/run.mjs",
     "agent:v5": "node examples/reference-agent/run.mjs --v5",
-    "deploy:bot-testnet": "tsx scripts/deploy-bot-testnet.ts",
+    "deploy:bot-testnet": "node scripts/deploy-bot-testnet.mjs",
     "wallet:create:bot-testnet": "node scripts/create-bot-testnet-wallet.mjs"
+    ,"lifecycle:bot-testnet": "node scripts/lifecycle-bot-testnet.mjs"
+    ,"lifecycle:resume": "node scripts/resume-lifecycle.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "5.66.8",
