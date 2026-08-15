@@ -8,7 +8,7 @@ Researched 2026-08-15 from the [official BOT Chain quick guide](https://dev-docs
 | BOT Mainnet | VERIFIED BUT OPTIONAL | Chain ID `677`, RPC `https://rpc.botchain.ai`, explorer `https://scan.botchain.ai`. Not used without a deployment review. |
 | BO Wallet / MetaMask | VERIFIED AND USED | Official guide lists both. UI uses EIP-1193 `eth_requestAccounts` and explicit testnet switch. |
 | EOA Paymaster | VERIFIED BUT OPTIONAL | Official docs describe `pm_isSponsorable` and signed-tx submission to a paymaster. No sponsor endpoint or policy was verified for this project, so it is not enabled. |
-| USDT/test-token | UNKNOWN | No official current token address, bytecode, symbol and decimals were independently verified. No token transfer is claimed. |
+| USDT/test-token | UNKNOWN | No official current token address, bytecode, symbol and decimals were independently verified. The protocol now includes a clearly labelled `Demo USDT` (6 decimals) for a future BOT Testnet deployment; no token transfer is claimed. |
 | x402 | RESEARCHED, NOT REQUIRED | No official BOT Chain x402 integration was verified. |
 | ERC-8004 / agent identity | NOT PUBLICLY READY | No official BOT-specific integration was verified during this build. |
 | B DEX | VERIFIED BUT OPTIONAL | The official guide links B DEX; it is not in the critical trust path. |
