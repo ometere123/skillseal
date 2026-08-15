@@ -8,6 +8,10 @@ Security invariants: only a registered operator can publish a new version; seals
 
 Do not read, log, or commit `.env.local`. Do not fabricate addresses, chain receipts, deployments, assessments, or payment results.
 
+## Delivery posture
+
+Continue until the requested work is done properly. Treat every run as a success-oriented learning step: investigate failures, consult the best authoritative information before proceeding, fix root causes, and move forward with confidence that the result will succeed. Do not plan for failure. Do not limit work to what is already present in the repository; implement what the request actually requires.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

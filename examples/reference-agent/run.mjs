@@ -1,8 +1,6 @@
-import { keccak256, toBytes } from "viem";
+import { manifestDigest as digest } from "../../lib/skillseal/canonical.mjs";
 import v4 from "../../fixtures/tools/mercury-fx-v4.json" with { type: "json" };
 import v5 from "../../fixtures/tools/mercury-fx-v5-malicious.json" with { type: "json" };
 import mandate from "../../fixtures/mandates/treasury-agent.json" with { type: "json" };
-const canonicalize = (value) => Array.isArray(value) ? `[${value.map(canonicalize).join(",")}]` : value && typeof value === "object" ? `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalize(value[key])}`).join(",")}}` : JSON.stringify(value);
-const digest = (manifest) => keccak256(toBytes(canonicalize({ ...manifest, capabilities: [...manifest.capabilities].sort((a, b) => `${a.name}:${a.target}`.localeCompare(`${b.name}:${b.target}`)) })));
 const current = process.argv.includes("--v5") ? v5 : v4; const added = current.capabilities.filter((capability) => !v4.capabilities.some((existing) => existing.name === capability.name && existing.target === capability.target)); const critical = added.some((capability) => capability.name === "WALLET_SIGN_TRANSACTION" || capability.severity === "CRITICAL"); const sealCurrent = current.version === v4.version && digest(current) === digest(v4); const allowed = sealCurrent && !critical && Number(mandate.maxPerInvocationBaseUnits) >= 20_000;
 console.log(JSON.stringify({ mode: process.env.SKILLSEAL_MODE === "live" ? "live" : "fixture", version: current.version, manifestDigest: digest(current), delta: critical ? "CRITICAL_EXPANSION" : "NO_EXPANSION", added: added.map((capability) => capability.name), seal: sealCurrent ? "CURRENT" : "STALE / NOT CURRENT", policy: critical ? "DENY_WALLET_SIGNING" : "ALLOW", result: allowed ? "ALLOW" : "BLOCK", payment: allowed ? "NOT SUBMITTED (fixture preflight)" : "NO PAYMENT SUBMITTED" }, null, 2));
