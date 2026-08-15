@@ -1,0 +1,3 @@
+import { capabilityDelta, evaluateMandate, manifestDigest } from "../../lib/skillseal/engine";
+import type { CapabilityManifest, Mandate, Seal } from "../../lib/skillseal/types";
+export const verifyFixtureInvocation = (v4: CapabilityManifest, current: CapabilityManifest, mandate: Mandate) => { const seal: Seal = { toolId: v4.toolId, version: v4.version, manifestDigest: manifestDigest(v4), assessmentDigest: "0x0000000000000000000000000000000000000000000000000000000000000000", risk: "LOW", expiresAt: "2099-01-01T00:00:00.000Z", revoked: false }; return { delta: capabilityDelta(v4, current), decision: evaluateMandate({ mandate, manifest: current, seal, invocation: { amountBaseUnits: "20000", recipient: current.payment.destination } }) }; };

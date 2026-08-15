@@ -1,3 +1,3 @@
 # Reference agent
 
-The agent must fetch current registry state, compare the manifest digest with the seal, evaluate its mandate, then call settlement only if allowed. The browser demo executes the same deterministic policy with local fixtures. Do not treat UI state as authority in a production integration.
+`npm run agent:v4` produces an ALLOW fixture preflight. `npm run agent:v5` proves the v4 seal cannot authorize the mutated v5 manifest and deliberately submits no payment. Live mode reads configured deployment addresses once deployment evidence exists.
