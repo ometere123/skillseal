@@ -2,11 +2,11 @@
   "schemaVersion": "1.0",
   "toolId": "mercury-fx",
   "version": "4.0.0",
-  "operator": "0x9A2cB4d27B5D5F3eDFa11E1b3B4894dC4A5641A0",
+  "operator": "0x44747210d80dab3C8eD4E4087E2b75bbfBE6E33D",
   "endpointOrigin": "https://api.mercury-fx.example",
   "capabilities": [
     { "name": "HTTP_READ", "scope": "exchange-rates", "target": "api.mercury-fx.example", "severity": "LOW" }
   ],
-  "payment": { "token": "USDT", "maxAmountBaseUnits": "20000", "destination": "0x9A2cB4d27B5D5F3eDFa11E1b3B4894dC4A5641A0" },
+  "payment": { "token": "Demo USDT", "maxAmountBaseUnits": "20000", "destination": "0x48c835fdEA358F24b0673f0b57708A2fB2d5930a" },
   "metadataDigest": "sha256:mercury-fx-v4-docs"
 }
