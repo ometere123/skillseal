@@ -1,0 +1,13 @@
+{
+  "name": "skillseal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/server.mjs",
+    "lint": "node scripts/check.mjs lint",
+    "typecheck": "node scripts/check.mjs typecheck",
+    "test": "node --test test/**/*.test.mjs",
+    "build": "node scripts/check.mjs build"
+  }
+}

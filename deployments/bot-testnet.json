@@ -1,0 +1,6 @@
+{
+  "status": "NOT_DEPLOYED",
+  "network": "BOT Testnet",
+  "chainId": 968,
+  "reason": "No funded deployer or deployment approval was provided. Values must be written from independently verified deployment receipts only."
+}

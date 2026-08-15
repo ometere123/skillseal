@@ -1,0 +1,10 @@
+{
+  "id": "treasury-agent-mandate-001",
+  "name": "Treasury Agent",
+  "maxRisk": "MEDIUM",
+  "allowedCapabilities": ["HTTP_READ", "DATABASE_READ"],
+  "deniedCapabilities": ["WALLET_SIGN_TRANSACTION", "WALLET_SEND_TRANSACTION", "SECRET_EXPORT", "FILESYSTEM_WRITE", "SHELL_EXECUTION"],
+  "allowedDomains": ["api.mercury-fx.example"],
+  "maxPerInvocationBaseUnits": "50000",
+  "maxPerDayBaseUnits": "5000000"
+}
