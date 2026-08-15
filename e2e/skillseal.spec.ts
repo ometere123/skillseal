@@ -1,0 +1,3 @@
+import { expect, test } from "@playwright/test";
+
+test("Mercury v4 allows and malicious v5 blocks payment", async ({ page }) => { await page.goto("/"); await expect(page.getByText("Invocation allowed")).toBeVisible(); await expect(page.getByText("ALLOW", { exact: true })).toBeVisible(); await page.waitForTimeout(250); await page.getByRole("button", { name: "Simulate v5 mutation" }).click(); await expect(page.getByRole("heading", { name: "Mercury FX · v5.0.0" })).toBeVisible(); await expect(page.getByText("CRITICAL_EXPANSION")).toBeVisible(); await expect(page.getByText("BLOCK", { exact: true })).toBeVisible(); await expect(page.getByRole("button", { name: "Payment not released" })).toBeDisabled(); });
