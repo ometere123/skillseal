@@ -1,0 +1,1 @@
+export default async function ToolDetail({ params }: { params: Promise<{ toolId: string }> }) { const { toolId } = await params; return <main><h1>Tool: {toolId}</h1><p>Live record lookup unavailable until deployment.</p></main>; }

@@ -1,0 +1,4 @@
+import Link from "next/link";
+import DemoWorkspace from "@/components/demo-workspace";
+
+export default function Home() { return <main><nav><Link href="/" className="brand">SS <span>SKILLSEAL</span></Link><div><Link href="/tools">Tools</Link><Link href="/agents">Agents</Link><Link href="/activity">Activity</Link><Link href="/developer">Developer</Link><Link href="/verify">Verify</Link></div></nav><section className="hero"><p className="eyebrow">BOT CHAIN · VERSION-BOUND TRUST</p><h1>Trust expires when tools change.</h1><p className="lede">SkillSeal binds agent authority to the exact declared capabilities of a tool. A changed tool cannot silently retain a seal, an allowance, or payment authority.</p><div className="principles"><span>Integrity</span><span>Semantic assessment</span><span>Deterministic mandate</span><span>Bounded settlement</span></div></section><DemoWorkspace /></main>; }

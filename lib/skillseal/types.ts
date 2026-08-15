@@ -1,0 +1,10 @@
+export const capabilityNames = ["HTTP_READ", "HTTP_WRITE", "FILESYSTEM_READ", "FILESYSTEM_WRITE", "SECRET_READ", "SECRET_EXPORT", "WALLET_READ", "WALLET_SIGN_MESSAGE", "WALLET_SIGN_TRANSACTION", "WALLET_SEND_TRANSACTION", "TOKEN_TRANSFER", "ARBITRARY_CODE_EXECUTION", "SHELL_EXECUTION", "DATABASE_READ", "DATABASE_WRITE"] as const;
+export type CapabilityName = (typeof capabilityNames)[number];
+export type Risk = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" | "UNKNOWN";
+export type Capability = { name: CapabilityName; scope: string; target: string; severity: Risk };
+export type CapabilityManifest = { schemaVersion: "1.0"; toolId: string; version: string; operator: `0x${string}`; endpointOrigin: string; capabilities: Capability[]; payment: { token: string; maxAmountBaseUnits: string; destination: `0x${string}` }; metadataDigest: string };
+export type Seal = { toolId: string; version: string; manifestDigest: `0x${string}`; risk: Risk; assessmentDigest: `0x${string}`; expiresAt: string; revoked: boolean };
+export type Mandate = { id: string; name: string; maxRisk: Risk; allowedCapabilities: CapabilityName[]; deniedCapabilities: CapabilityName[]; allowedDomains: string[]; maxPerInvocationBaseUnits: string; maxPerDayBaseUnits: string };
+export type Invocation = { amountBaseUnits: string; recipient: `0x${string}` };
+export type PolicyReason = "SEAL_MISSING" | "SEAL_STALE" | "MANIFEST_CHANGED" | "ASSESSMENT_EXPIRED" | "RISK_TOO_HIGH" | "CAPABILITY_DENIED" | "DOMAIN_NOT_ALLOWED" | "PRICE_TOO_HIGH" | "DAILY_LIMIT_EXCEEDED" | "PAYMENT_DESTINATION_CHANGED";
+export type PolicyDecision = { allowed: boolean; reasons: PolicyReason[]; manifestDigest: `0x${string}` };

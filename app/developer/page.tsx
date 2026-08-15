@@ -1,0 +1,1 @@
+export default function DeveloperPage() { return <main><h1>Developer integration</h1><pre>{`const decision = client.verifyInvocation({ toolId, manifest, mandate, invocation })\nif (!decision.allowed) throw new Error(decision.reasons[0])`}</pre></main>; }

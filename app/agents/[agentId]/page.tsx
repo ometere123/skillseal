@@ -1,0 +1,1 @@
+export default async function AgentDetail({ params }: { params: Promise<{ agentId: string }> }) { const { agentId } = await params; return <main><h1>Agent: {agentId}</h1><p>Mandate history will be chain-backed after deployment.</p></main>; }

@@ -1,0 +1,1 @@
+export default function VerifyPage() { return <main><h1>Verify tool state</h1><p>Verify resolves registry state, the current manifest, seal status and payment destination once a live registry address is configured.</p></main>; }

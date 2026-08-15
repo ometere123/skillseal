@@ -1,0 +1,6 @@
+import OpenAI from "openai";
+import { NextResponse } from "next/server";
+import { assessmentSchema, manifestSchema } from "@/lib/skillseal/schemas";
+
+export const runtime = "nodejs";
+export async function POST(request: Request) { const key = process.env.AI_PROVIDER_API_KEY; if (!key) return NextResponse.json({ code: "ASSESSMENT_UNAVAILABLE" }, { status: 503 }); try { const manifest = manifestSchema.parse(await request.json()); const client = new OpenAI({ apiKey: key, timeout: 15_000, maxRetries: 1 }); const response = await client.responses.create({ model: "gpt-5.6-luna", reasoning: { effort: "low" }, input: [{ role: "system", content: "Assess only declared tool capabilities. Return JSON with verdict, confidence, capabilitySummary, findings, privilegeExpansion, paymentRisk, credentialRisk, recommendedPolicy. Never authorize money movement." }, { role: "user", content: JSON.stringify(manifest) }], text: { format: { type: "json_object" } } }); const raw = response.output_text; if (raw.length > 24_000) throw new Error("response too large"); return NextResponse.json(assessmentSchema.parse(JSON.parse(raw))); } catch { return NextResponse.json({ code: "ASSESSMENT_UNAVAILABLE" }, { status: 503 }); } }
