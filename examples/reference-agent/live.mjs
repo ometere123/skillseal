@@ -1,18 +1,15 @@
 import { createPublicClient, http, keccak256, toBytes } from "viem";
 import { loadBotDeployment } from "../../scripts/load-bot-deployment.mjs";
-import { registryAbi } from "../../scripts/chain-abis.mjs";
+import { erc20Abi, registryAbi, settlementAbi } from "../../scripts/chain-abis.mjs";
 import { manifestDigest } from "../../lib/skillseal/canonical.mjs";
 import v4 from "../../fixtures/tools/mercury-fx-v4.json" with { type: "json" };
 import v5 from "../../fixtures/tools/mercury-fx-v5-malicious.json" with { type: "json" };
 
 const chain = { id: 968, name: "BOT Testnet", nativeCurrency: { name: "BOT", symbol: "BOT", decimals: 18 }, rpcUrls: { default: { http: ["https://rpc.bohr.life"] } } };
 const client = createPublicClient({ chain, transport: http() });
-const deployment = loadBotDeployment();
-const toolId = keccak256(toBytes(v4.toolId));
-const tool = await client.readContract({ address: deployment.registryAddress, abi: registryAbi, functionName: "tools", args: [toolId] });
-const current = await client.readContract({ address: deployment.registryAddress, abi: registryAbi, functionName: "versions", args: [toolId, tool[1]] });
-const historicalSeal = await client.readContract({ address: deployment.registryAddress, abi: registryAbi, functionName: "seals", args: [toolId, 1n] });
-const delta = { classification: "CRITICAL_EXPANSION" };
-const expected = manifestDigest(v5);
-if (tool[1] !== 2n || current[0] !== expected || historicalSeal[0] !== manifestDigest(v4)) throw new Error("Live state does not match canonical lifecycle evidence.");
-console.log(["SKILLSEAL LIVE PREFLIGHT", "", "Tool              Mercury FX", "Registry version  2", "Manifest version  5.0.0", `Digest            ${expected}`, "", "Historical seal   registry version 1", "Seal status        STALE FOR CURRENT VERSION", "", "Capability delta", "+ WALLET_SIGN_TRANSACTION", "", `Classification     ${delta.classification}`, "Policy             DENY_WALLET_SIGNING", "Settlement         WOULD REVERT", "Decision           BLOCK", "Payment            NOT SUBMITTED"].join("\n"));
+const deployment = loadBotDeployment(); const toolId = keccak256(toBytes(v4.toolId)); const mandateId = keccak256(toBytes("treasury-agent-mandate-001")); const receiptId = keccak256(toBytes("mercury-v4-receipt")); const simulationReceipt = keccak256(toBytes("skillseal-v5-stale-simulation"));
+const [tool, version1, version2, seal, mandate, receipt, providerBalance] = await Promise.all([client.readContract({ address: deployment.registryAddress, abi: registryAbi, functionName: "tools", args: [toolId] }), client.readContract({ address: deployment.registryAddress, abi: registryAbi, functionName: "versions", args: [toolId, 1n] }), client.readContract({ address: deployment.registryAddress, abi: registryAbi, functionName: "versions", args: [toolId, 2n] }), client.readContract({ address: deployment.registryAddress, abi: registryAbi, functionName: "seals", args: [toolId, 1n] }), client.readContract({ address: deployment.registryAddress, abi: registryAbi, functionName: "mandates", args: [mandateId] }), client.readContract({ address: deployment.settlementAddress, abi: settlementAbi, functionName: "usedReceipts", args: [receiptId] }), client.readContract({ address: deployment.demoUsdtAddress, abi: erc20Abi, functionName: "balanceOf", args: [v4.payment.destination] })]);
+const added = v5.capabilities.filter((capability) => !v4.capabilities.some((prior) => prior.name === capability.name && prior.scope === capability.scope && prior.target === capability.target));
+let staleSimulation = "UNEXPECTED_SUCCESS"; try { await client.simulateContract({ account: deployment.deployment.deployer, address: deployment.settlementAddress, abi: settlementAbi, functionName: "settleInvocation", args: [simulationReceipt, toolId, mandateId, 1n, manifestDigest(v4), 20_000n] }); } catch { staleSimulation = "REVERT"; }
+if (tool[1] !== 2n || version1[0] !== manifestDigest(v4) || version2[0] !== manifestDigest(v5) || seal[0] !== manifestDigest(v4) || !mandate[5] || !receipt || providerBalance !== 20_000n || staleSimulation !== "REVERT") throw new Error("Live lifecycle verification failed.");
+console.log(["SKILLSEAL LIVE PREFLIGHT", "", "Tool              Mercury FX", "Registry version  2", "Manifest version  5.0.0", `Current digest    ${version2[0]}`, "", "Historical seal", "Registry version  1", `Digest             ${seal[0]}`, "Status             STALE FOR CURRENT VERSION", "", "Capability delta", ...added.map((capability) => `+ ${capability.name}`), "", "Classification     CRITICAL_EXPANSION", "Policy             DENY_WALLET_SIGNING", `Provider balance   ${providerBalance} Demo USDT base units`, "Receipt             used for V4", `Stale simulation    ${staleSimulation}`, "Decision            BLOCK", "Payment             NOT SUBMITTED"].join("\n"));
